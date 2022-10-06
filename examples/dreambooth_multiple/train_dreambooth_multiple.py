@@ -49,16 +49,13 @@ def parse_args():
         required=True,
         help="A folder containing the training data",
     )
-    parser.add_argument("--prior_loss_weight", type=float, default=1.0, help="The weight of prior preservation loss.")
     parser.add_argument(
-        "--num_class_images",
-        type=int,
-        default=100,
-        help=(
-            "Minimal class images for prior perversation loss. If not have enough images, additional images will be"
-            " sampled with class_prompt."
-        ),
+        "--with_prior_preservation",
+        default=True,
+        action="store_true",
+        help="Flag to add prior perservation loss.",
     )
+    parser.add_argument("--prior_loss_weight", type=float, default=1.0, help="The weight of prior preservation loss.")
     parser.add_argument(
         "--output_dir",
         type=str,
