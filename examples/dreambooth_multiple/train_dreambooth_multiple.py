@@ -174,7 +174,7 @@ def parse_args():
     if env_local_rank != -1 and env_local_rank != args.local_rank:
         args.local_rank = env_local_rank
 
-    if args.instance_data_dir is None:
+    if args.data_dir is None:
         raise ValueError("You must specify a train data directory.")
 
     return args
