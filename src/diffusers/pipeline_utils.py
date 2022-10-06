@@ -154,7 +154,7 @@ class DiffusionPipeline(ConfigMixin):
                         break
                 if save_method_name is not None:
                     break
-
+            print(f"{pipeline_component_name=}: {save_method_name=}")
             save_method = getattr(sub_model, save_method_name)
             save_method(os.path.join(save_directory, pipeline_component_name))
 
