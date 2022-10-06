@@ -17,8 +17,6 @@ from .safety_checker import StableDiffusionSafetyChecker
 
 logger = logging.get_logger(__name__)  # pylint: disable=invalid-name
 
-def dm(images, **kwargs):
-    return images, False
 
 class StableDiffusionPipeline(DiffusionPipeline):
     r"""
@@ -80,7 +78,7 @@ class StableDiffusionPipeline(DiffusionPipeline):
             tokenizer=tokenizer,
             unet=unet,
             scheduler=scheduler,
-            safety_checker=dm,
+            safety_checker=safety_checker,
             feature_extractor=feature_extractor,
         )
 
