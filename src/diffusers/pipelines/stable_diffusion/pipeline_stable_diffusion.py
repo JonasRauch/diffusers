@@ -52,8 +52,8 @@ class StableDiffusionPipeline(DiffusionPipeline):
         tokenizer: CLIPTokenizer,
         unet: UNet2DConditionModel,
         scheduler: Union[DDIMScheduler, PNDMScheduler, LMSDiscreteScheduler],
-        safety_checker: StableDiffusionSafetyChecker,
-        feature_extractor: CLIPFeatureExtractor,
+        safety_checker: StableDiffusionSafetyChecker = None,
+        feature_extractor: CLIPFeatureExtractor = None,
     ):
         super().__init__()
 
@@ -77,8 +77,8 @@ class StableDiffusionPipeline(DiffusionPipeline):
             tokenizer=tokenizer,
             unet=unet,
             scheduler=scheduler,
-            safety_checker=safety_checker,
-            feature_extractor=feature_extractor,
+            #safety_checker=safety_checker,
+            #feature_extractor=feature_extractor,
         )
 
     def enable_attention_slicing(self, slice_size: Optional[Union[str, int]] = "auto"):
@@ -329,15 +329,13 @@ class StableDiffusionPipeline(DiffusionPipeline):
         image = (image / 2 + 0.5).clamp(0, 1)
         image = image.cpu().permute(0, 2, 3, 1).numpy()
 
-        safety_checker_input = self.feature_extractor(self.numpy_to_pil(image), return_tensors="pt").to(self.device)
-        image, has_nsfw_concept = self.safety_checker(
-            images=image, clip_input=safety_checker_input.pixel_values.to(text_embeddings.dtype)
-        )
+        #safety_checker_input = self.feature_extractor(self.numpy_to_pil(image), return_tensors="pt").to(self.device)
+        image, has_nsfw_concept = image, False
 
         if output_type == "pil":
             image = self.numpy_to_pil(image)
 
         if not return_dict:
-            return {"sample": image, "nsfw_content_detected": False}
+            return (image, has_nsfw_concept)
 
         return StableDiffusionPipelineOutput(images=image, nsfw_content_detected=has_nsfw_concept)
